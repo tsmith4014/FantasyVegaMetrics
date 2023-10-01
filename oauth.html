@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FantasyVegaMetrics OAuth</title>
+  </head>
+  <body>
+    <h1>You have been authorized!</h1>
+    <script>
+      // Extract the authorization code from the URL.
+      const urlParams = new URLSearchParams(window.location.search);
+      const authCode = urlParams.get("code");
+
+      if (authCode) {
+        // Redirect to the main application with the authorization code.
+        // In a real application, you'd use this code to get an access token.
+        window.location.href = `https://tsmith4014.github.io/FantasyVegaMetrics?code=${authCode}`;
+      } else {
+        // No code found, you could redirect to an error page or log an error.
+        console.error("No authorization code found in the URL.");
+      }
+    </script>
+  </body>
+</html>
