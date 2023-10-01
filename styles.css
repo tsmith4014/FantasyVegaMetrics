@@ -1,0 +1,12 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#app {
+  text-align: center;
+  margin: 30px;
+}
+
+#data-container {
+  margin-top: 20px;
+}
