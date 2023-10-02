@@ -1,0 +1,5 @@
+venv/
+staticdata.csv
+player_suffixes.json
+oauth.html
+auth.py
