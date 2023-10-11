@@ -1,44 +1,40 @@
+# player_names.py
+import json
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
-import json
 
-def fetch_player_suffixes(letter):
-    base_url = 'https://www.pro-football-reference.com/players/'
-    url = urljoin(base_url, f"{letter}/")
-    
+def get_player_suffixes():
+    url = "https://www.pro-football-reference.com/players/A/"
     response = requests.get(url)
+    
     if response.status_code != 200:
-        print(f"Failed to fetch URL for letter {letter}. Status code: {response.status_code}")
+        print(f"Failed to fetch data with status code: {response.status_code}")
         return []
     
     soup = BeautifulSoup(response.text, 'html.parser')
-    player_links = soup.select('#div_players p > a')
+    player_suffixes = []
     
-    suffixes = []
-    for link in player_links:
-        suffix = link['href'].split('/')[-1].split('.')[0]
-        suffixes.append(suffix)
+    for player in soup.select('p b a'):
+        player_path = player['href']
+        player_years = player.find_parent().find_parent().text.split(' ')[-1]
+        
+        if '2023' in player_years:
+            player_suffix = player_path.split('/')[-1].split('.')[0]
+            player_suffixes.append(player_suffix)
+            
+    return player_suffixes
 
-    return suffixes
-
-if __name__ == "__main__":
-    letters = ['A']  # Extend this list for more letters
-    all_suffixes = []
-    
-    for letter in letters:
-        suffixes = fetch_player_suffixes(letter)
-        all_suffixes.extend(suffixes)
-    
-    with open('player_suffixes.json', 'w') as f:
-        json.dump(all_suffixes, f)
+if __name__ == '__main__':
+    player_suffixes = get_player_suffixes()
+    with open("active_player_suffixes.json", "w") as f:
+        json.dump(player_suffixes, f)
 
 
-
-
+# all players active and inactive
 # import requests
 # from bs4 import BeautifulSoup
 # from urllib.parse import urljoin
+# import json
 
 # def fetch_player_suffixes(letter):
 #     base_url = 'https://www.pro-football-reference.com/players/'
@@ -50,8 +46,6 @@ if __name__ == "__main__":
 #         return []
     
 #     soup = BeautifulSoup(response.text, 'html.parser')
-    
-#     # Update the selector based on the HTML structure you shared
 #     player_links = soup.select('#div_players p > a')
     
 #     suffixes = []
@@ -62,16 +56,18 @@ if __name__ == "__main__":
 #     return suffixes
 
 # if __name__ == "__main__":
-#     # Get player suffixes for players whose names start with 'A' as an example
-#     letters = ['A']  # You can extend this to include other letters
+#     letters = ['A']  # Extend this list for more letters
 #     all_suffixes = []
     
 #     for letter in letters:
 #         suffixes = fetch_player_suffixes(letter)
 #         all_suffixes.extend(suffixes)
+    
+#     with open('player_suffixes.json', 'w') as f:
+#         json.dump(all_suffixes, f)
 
-#     print(f"Collected {len(all_suffixes)} player URL suffixes.")
-#     print("Sample suffixes:", all_suffixes[:5])
+
+
 
 
 
