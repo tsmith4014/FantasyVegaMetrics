@@ -3,3 +3,5 @@ staticdata.csv
 player_suffixes.json
 oauth.html
 auth.py
+all_players_data.csv
+full_player_game_stats.csv
